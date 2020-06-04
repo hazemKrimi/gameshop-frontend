@@ -1,36 +1,60 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { MainContext } from '../contexts/MainContext';
 import { Jumbotron, Row, Col, Card, CardBody, CardTitle, CardSubtitle, Button } from 'reactstrap';
+import { Redirect } from 'react-router-dom';
 
 const Home = () => {
-    const [games, setGames] = useState([
-        { id: 1, name: 'GTA 5', developer: 'Rockstar Games' },
-        { id: 2, name: 'Minecraft', developer: 'Mojang' },
-        { id: 3, name: 'MGSV', developer: 'Kojima Productions' },
-    ]);
+    const { user, games, getGames, deleteGame } = useContext(MainContext);
 
-    return (
+    const del = async(id) => {
+        try {
+            await deleteGame(id);
+        } catch (err) {
+            alert(err.msg ? err.msg : 'Cannot get games currently, please try again later');
+        }
+    };
+
+    useEffect(() => {
+        (async () => {
+            try {
+                await getGames();
+            } catch(err) {
+                console.error(err);
+            }
+        })();
+    });
+
+    return user ? (
         <Jumbotron className="container">
-            {games[0] ? <h1>Games:</h1> : <h1>No Games Found</h1>}
+            {games && games[0] ? <h1>Games:</h1> : <h1>No Games Found</h1>}
             {games && games.map(game => (
-                <Row key={game.id} className="my-2">
+                <Row key={game._id} className="my-2">
                     <Col>
                         <Card>
                             <CardBody>
                                 <CardTitle>
-                                    <h3>Title: {game.name}</h3>
+                                    <h3>Title: { game.title }</h3>
                                 </CardTitle>
-                                <CardSubtitle>Developer: {game.developer}</CardSubtitle>
+                                <CardSubtitle>Desciption: { game.description }</CardSubtitle>
+                                <CardSubtitle>Developer: { game.name }</CardSubtitle>
                                 <div className="mt-2">
                                     <Button>
-                                        <a href='#' target="_blank" rel="noopener noreferrer">Download</a>
+                                        <a href={`${process.env.REACT_APP_SERVER}game/download/${game.file_name}`} rel="noopener noreferrer">Download</a>
                                     </Button>
                                 </div>
+                                { user.id === game.user_id && 
+                                    <div className="mt-2">
+                                        <Button color='danger' onClick={() => del(game._id)}>Delete</Button>
+                                    </div>
+                                }
                             </CardBody>
                         </Card>
                     </Col>
                 </Row>
             ))}
         </Jumbotron>
+    ) : (
+        <Redirect to='/login' />
     );
 };
 
