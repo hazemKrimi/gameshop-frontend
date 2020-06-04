@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import MainNav from './components/MainNav';
+import MainContextProvider from './contexts/MainContext';
+import Nav from './components/Nav';
 import LandingPage from './components/LandingPage';
 import Home from './components/Home';
 import Settings from './components/Settings';
@@ -12,8 +13,8 @@ import './App.css';
 
 const App = () => {
   return (
-    <React.Fragment>
-      <MainNav />
+    <MainContextProvider>
+      <Nav />
       <Router>
         <Switch>
           <Route exact path="/">
@@ -39,7 +40,7 @@ const App = () => {
           </Route>
         </Switch>
       </Router>
-    </React.Fragment>
+    </MainContextProvider>
   );
 };
 
