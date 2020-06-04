@@ -13,7 +13,7 @@ const MainContextProvider = ({ children }) => {
 
     const signUp = async(name, email, password) => {
         try {
-            let res = await fetch(`${process.env.REACT_APP_SERVER}signup`, {
+            let res = await fetch(`${process.env.REACT_APP_SERVER}/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -33,7 +33,7 @@ const MainContextProvider = ({ children }) => {
 
     const logIn = async(email, password) => {
         try {
-            let res = await fetch(`${process.env.REACT_APP_SERVER}login`, {
+            let res = await fetch(`${process.env.REACT_APP_SERVER}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -53,7 +53,7 @@ const MainContextProvider = ({ children }) => {
 
     const logOut = async() => {
         try {
-            await fetch(`${process.env.REACT_APP_SERVER}logout`);
+            await fetch(`${process.env.REACT_APP_SERVER}/logout`);
             document.cookie = "SessionID=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
             localStorage.removeItem('token');
             dispatch({ type: LOG_OUT });
@@ -65,7 +65,7 @@ const MainContextProvider = ({ children }) => {
 
     const getGames = async() => {
         try {
-            let res = await fetch(`${process.env.REACT_APP_SERVER}games`);
+            let res = await fetch(`${process.env.REACT_APP_SERVER}/games`);
             res = await res.json();
             if ([401, 404, 400].includes(res.status)) throw res;
             dispatch({ type: GET_GAMES, payload: res });
@@ -80,7 +80,7 @@ const MainContextProvider = ({ children }) => {
             formData.append('title', title);
             formData.append('description', description);
             formData.append('file', file);
-            let res = await fetch(`${process.env.REACT_APP_SERVER}games`, {
+            let res = await fetch(`${process.env.REACT_APP_SERVER}/games`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -98,7 +98,7 @@ const MainContextProvider = ({ children }) => {
 
     const deleteGame = async(id) => {
         try {
-            let res = await fetch(`${process.env.REACT_APP_SERVER}games`, {
+            let res = await fetch(`${process.env.REACT_APP_SERVER}/games`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -116,7 +116,7 @@ const MainContextProvider = ({ children }) => {
 
     const updateUser = async(name, email, password) => {
         try {
-            let res = await fetch(`${process.env.REACT_APP_SERVER}user`, {
+            let res = await fetch(`${process.env.REACT_APP_SERVER}/user`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -136,7 +136,7 @@ const MainContextProvider = ({ children }) => {
 
     const deleteUser = async() => {
         try {
-            let res = await fetch(`${process.env.REACT_APP_SERVER}user`, {
+            let res = await fetch(`${process.env.REACT_APP_SERVER}/user`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
