@@ -39,7 +39,7 @@ const Home = () => {
                                 <CardSubtitle>Developer: { game.name }</CardSubtitle>
                                 <div className="mt-2">
                                     <Button>
-                                        <a href={`${process.env.REACT_APP_SERVER}game/download/${game.file_name}`} rel="noopener noreferrer">Download</a>
+                                        <a href={`${process.env.REACT_APP_SERVER}/game/download/${game.file_name}`} rel="noopener noreferrer">Download</a>
                                     </Button>
                                 </div>
                                 { user.id === game.user_id && 
